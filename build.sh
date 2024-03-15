@@ -2,18 +2,18 @@
 
 cargo build --release
 
-wasm-pack build --target web --out-dir public --release
+wasm-pack build --target web --out-dir docs --release
 
-rm public/.gitignore
-rm public/*.d.ts
-rm public/package.json
+rm docs/.gitignore
+rm docs/*.d.ts
+rm docs/package.json
 
-cp src/index.html public
+cp src/index.html docs
 
 
 # Define file paths
 readmeFile="Readme.md"
-htmlFile="public/index.html"
+htmlFile="docs/index.html"
 # Check if the sed command is GNU sed or BSD sed (macOS)
 if sed --version 2>/dev/null | grep -q GNU; then
     # GNU sed
@@ -35,4 +35,4 @@ rm "${htmlFile}.bak"
 
 
 
-cp target/release/obm public/obm
+cp target/release/obm docs/obm
