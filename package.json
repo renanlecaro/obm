@@ -1,0 +1,15 @@
+{
+  "name": "obm",
+  "version": "0.1.0",
+  "description": "Explain complex things steps by steps",
+  "main": "index.js",
+  "scripts": {
+    "start": "RUST_BACKTRACE=1 cargo watch -cq -s 'cargo build --release && cat samples/coffee.md | target/release/obm'",
+    "build": "./build.sh",
+    "test": "RUST_BACKTRACE=1 cargo watch -cq -x test ",
+    "check": "RUST_BACKTRACE=1 cargo watch -cq -x check ",
+    "book": "rustup docs --book"
+  },
+  "author": "Renan LE CARO <renan@lecaro.me>",
+  "license": "ISC"
+}

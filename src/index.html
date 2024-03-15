@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <title>OBM</title>
+    <link
+            rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>"
+    />
+
+</head>
+<body>
+
+<textarea id="source"><Readme.md placeholder></textarea>
+<pre id="result">
+Generating...
+    <noscript>Please turn on javascript</noscript>
+</pre>
+<style>
+    body {
+        display: flex;
+        padding: 0;
+        margin: 0;
+        align-items: stretch;
+        height: 100vh;
+    }
+
+    #source {
+        padding: 20px;
+        width: 50vw;
+        flex-grow: 0;
+        flex-shrink: 0;
+        border: none;
+        overflow: auto;
+        resize: horizontal;
+        font-family: monospace;
+    }
+
+    #result {
+        flex-grow: 1;
+        flex-shrink: 1;
+        border-left: 1px solid black;
+        position: relative;
+        font-family: monospace;
+        overflow: auto;
+        padding: 20px;
+    }
+</style>
+<script type="module">
+    let version = 0
+    const myWorker = new Worker("worker.js", {type: "module"});
+
+    let source = document.getElementById('source');
+    let result = document.getElementById('result');
+
+    let timeout = 0;
+
+    function regenerate() {
+        result.style.opacity = 0.5;
+        version++
+        clearTimeout(timeout);
+        timeout = setTimeout(() => myWorker.postMessage({version, source: source.value}), 300)
+    }
+
+    source.addEventListener('keyup', regenerate)
+    source.addEventListener('change', regenerate)
+    regenerate()
+
+
+    myWorker.onmessage = e => {
+        if (e.data.version === version) {
+            result.textContent = e.data.output
+            result.style.opacity = 1;
+        }
+    }
+
+</script>
+</body>
+</html>
