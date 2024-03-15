@@ -13,16 +13,21 @@
 
 <textarea id="source"># Our beautiful mess (obm)
 
-## What is this ?
-
 This is a markdown to markdown converter. That sounds a bit silly, I know.
 All it does is look for lines that have an arrow in them, and consider them
 as an instruction, like below :
 
     A->B
 
-What we just did is declare a link from A to B. This will be replaced by a small
+What we just did is declare a link from A to B. OBM will replace it by a small
 chart, rendered in text in a Markdown code block (indented with 4 blocks).
+
+The result would look something like this (head to https://obm.lecaro.me/ to
+see an interactive side by side view)
+
+    ┏━━━┓    ┏━━━┓
+    ┃ A ┃━━━━┃ B ┃
+    ┗━━━┛    ┗━━━┛
 
 You can then add a second link to your document, and it will be added to the
 same chart as before.
