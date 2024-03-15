@@ -76,7 +76,6 @@ threads available to generate large graphs faster.
 - cli use : progress bar and intermediate results rendering to stdout
 - cli use : editor mode lets you modify the graph and fix the nodes location
 - wasm : allow multithreaded rendering
-- wasm : add tab support to the editor
 - output : generate svg instead of text diagram
 - output : generate slides with presenter notes
  
@@ -87,6 +86,10 @@ Generating...
     <noscript>Please turn on javascript</noscript>
 </pre>
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
     body {
         display: flex;
         padding: 0;
@@ -97,13 +100,13 @@ Generating...
 
     #source {
         padding: 20px;
-        width: 50vw;
         flex-grow: 0;
         flex-shrink: 0;
         border: none;
         overflow: auto;
         resize: horizontal;
         font-family: monospace;
+        white-space: pre;
     }
 
     #result {
@@ -116,13 +119,19 @@ Generating...
         padding: 20px;
     }
 </style>
-<script type="module">
-    let version = 0
-    const myWorker = new Worker("worker.js", {type: "module"});
 
-    let source = document.getElementById('source');
+<script>
+    // Selectors
     let result = document.getElementById('result');
+    let source = document.getElementById('source');
 
+    // Save textarea width
+    source.style.width = (localStorage.getItem("ta-size") || (window.innerWidth / 2)) + "px";
+    new ResizeObserver(() => localStorage.setItem("ta-size", source.scrollWidth.toString())).observe(source);
+
+    // Send work to worker and update preview
+    const myWorker = new Worker("worker.js", {type: "module"});
+    let version = 0;
     let timeout = 0;
 
     function regenerate() {
@@ -135,8 +144,6 @@ Generating...
     source.addEventListener('keyup', regenerate)
     source.addEventListener('change', regenerate)
     regenerate()
-
-
     myWorker.onmessage = e => {
         if (e.data.version === version) {
             result.textContent = e.data.output
@@ -144,6 +151,74 @@ Generating...
         }
     }
 
+    //     Add tab support
+    function supportTabIndentation(textarea) {
+        const offsetToLineAndOffset = (lines, offset) => {
+            let line = 0
+            while (offset > lines[line].length && line < lines.length - 1) {
+                offset = offset - lines[line].length - 1
+                line++
+            }
+            return {line, offset}
+        }
+        const LineAndOffsetToOffset = (lines, line, offset) => {
+            for (let i = 0; i < line; i++)
+                offset += lines[i].length + 1
+
+            return offset
+        }
+
+        textarea.addEventListener('keydown', e => {
+            if (e.key == 'Tab') {
+                e.preventDefault()
+                const lines = e.target.value.split('\n')
+
+                const selection = [offsetToLineAndOffset(lines, textarea.selectionStart),
+                    offsetToLineAndOffset(lines, textarea.selectionEnd)]
+                for (var l = selection[0].line; l <= selection[1].line; l++) {
+                    const originalLength = lines[l].length
+                    if (e.shiftKey) {
+                        lines[l] = lines[l].replace(/^ {0,4}/, '')
+                    } else {
+                        lines[l] = '    ' + lines[l]
+                    }
+                    // How much the line moved
+                    const delta = lines[l].length - originalLength
+                    // Update the user selection if it's on this line
+                    selection.forEach((sel) => {
+                        if (sel.line == l) {
+                            sel.offset = Math.max(0, sel.offset + delta)
+                        }
+                    })
+                }
+                textarea.value = lines.join('\n')
+                textarea.selectionStart = LineAndOffsetToOffset(lines, selection[0].line, selection[0].offset)
+                textarea.selectionEnd = LineAndOffsetToOffset(lines, selection[1].line, selection[1].offset)
+            }
+            if (e.key === 'Enter') {
+                const {selectionStart, selectionEnd, value} = textarea
+
+                const linesBeforeCursor = value.slice(0, selectionStart).split('\n')
+                const lastLine = linesBeforeCursor[linesBeforeCursor.length - 1]
+                const indentation = lastLine.match(/^\s+/)?.[0] || ''
+
+                textarea.value = value.slice(0, selectionStart) + '\n' + indentation + value.slice(selectionEnd)
+                textarea.selectionStart = selectionStart + 1 + indentation.length
+                textarea.selectionEnd = textarea.selectionStart
+
+                e.preventDefault()
+            }
+        })
+    }
+
+    supportTabIndentation(source)
+
+    // Disable ctrl S
+    document.addEventListener("keydown", event => {
+        if (event.key == 's' && event.ctrlKey) {
+            event.preventDefault()
+        }
+    })
 </script>
 </body>
 </html>

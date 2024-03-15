@@ -63,7 +63,6 @@ threads available to generate large graphs faster.
 - cli use : progress bar and intermediate results rendering to stdout
 - cli use : editor mode lets you modify the graph and fix the nodes location
 - wasm : allow multithreaded rendering
-- wasm : add tab support to the editor
 - output : generate svg instead of text diagram
 - output : generate slides with presenter notes
  
