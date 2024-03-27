@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OBM</title>
     <link
             rel="icon"
@@ -10,7 +11,18 @@
 
 </head>
 <body>
+<input type="radio" name="mobile_show" value="source" id="showSource" checked>
+<input type="radio" name="mobile_show" value="result" id="showResult">
+<nav>
 
+    <label for="showSource">
+        Source
+    </label>
+    <label for="showResult">
+        Result
+    </label>
+
+</nav>
 <textarea id="source"># Our beautiful mess (obm)
 
 This is a markdown to markdown converter. That sounds a bit silly, I know.
@@ -90,33 +102,95 @@ Generating...
         box-sizing: border-box;
     }
 
-    body {
-        display: flex;
-        padding: 0;
-        margin: 0;
-        align-items: stretch;
-        height: 100vh;
+    input[type="radio"] {
+        position: absolute;
+        left: -1000px;
     }
 
-    #source {
-        padding: 20px;
-        flex-grow: 0;
-        flex-shrink: 0;
-        border: none;
-        overflow: auto;
-        resize: horizontal;
-        font-family: monospace;
-        white-space: pre;
+    @media screen and (min-width: 1000px) {
+
+        body {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: stretch;
+            height: 100vh;
+        }
+
+        nav {
+            display: none;
+        }
+
+        #source {
+            padding: 20px;
+            flex-grow: 0;
+            flex-shrink: 0;
+            border: none;
+            overflow: auto;
+            resize: horizontal;
+            font-family: monospace;
+            white-space: pre;
+        }
+
+        #result {
+            flex-grow: 1;
+            flex-shrink: 1;
+            border-left: 1px solid black;
+            position: relative;
+            font-family: monospace;
+            overflow: auto;
+            padding: 20px;
+        }
     }
 
-    #result {
-        flex-grow: 1;
-        flex-shrink: 1;
-        border-left: 1px solid black;
-        position: relative;
-        font-family: monospace;
-        overflow: auto;
-        padding: 20px;
+    @media screen and (max-width: 1000px) {
+
+        body {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            height: 100vh;
+        }
+
+        nav {
+            background: #333;
+            color: #FFF;
+            font-family: monospace;
+        }
+
+        nav > label {
+            display: inline-block;
+            padding: 0 20px;
+
+            line-height: 40px;
+
+        }
+
+        input#showSource:checked ~ #result,
+        input#showResult:checked ~ #source {
+            display: none;
+        }
+
+        input#showSource:checked ~ nav > label[for="showSource"],
+        input#showResult:checked ~ nav > label[for="showResult"] {
+            background: white;
+            color: #000;
+        }
+
+
+        #source, #result {
+            padding: 20px;
+            width: 100vw !important;
+
+            flex-grow: 1;
+            display: block;
+            align-self: stretch;
+            resize: none;
+            border: none;
+            overflow: auto;
+        }
     }
 </style>
 
