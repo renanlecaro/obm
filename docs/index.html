@@ -100,7 +100,14 @@ Generating...
 <style>
     @font-face {
         font-family: 'IBMPlexMono-Regular';
-        src: url('./IBMPlexMono-Regular.ttf') format('ttf');
+  
+        src: url('ibmplexmono-regular-webfont.woff2') format('woff2'),
+        url('ibmplexmono-regular-webfont.woff') format('woff'),
+        url('./IBMPlexMono-Regular.ttf') format('ttf');
+
+        font-weight: normal;
+        font-style: normal;
+
     }
 
     * {
