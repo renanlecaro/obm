@@ -9,26 +9,13 @@ as an instruction, like below :
 What we just did is declare a link from A to B. OBM will replace it by a small
 chart, rendered in text in a Markdown code block (indented with 4 blocks).
 
-The result would look something like this (head to https://obm.lecaro.me/ to
-see an interactive side by side view)
+The result would look something like this.
 
     ╔═══╗ ╔═══╗
     ║ A ║═║ B ║
     ╚═══╝ ╚═══╝
 
-You can then add a second link to your document, and it will be added to the
-same chart as before.
-
-    B->C
-
-You can declare more than one link per line too, by chaining arrows.
-
-    C->D->E->A
-
-If you want, you can cluster nodes by using the colon symbol between a parent
-and child, like this:
-
-    Parent:First child -> Parent:Other child
+Head to https://obm.lecaro.me/ to see an interactive side by side view.
 
 ## How does it work ?
 
