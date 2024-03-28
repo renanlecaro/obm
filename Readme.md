@@ -12,9 +12,9 @@ chart, rendered in text in a Markdown code block (indented with 4 blocks).
 The result would look something like this (head to https://obm.lecaro.me/ to
 see an interactive side by side view)
 
-    ┏━━━┓    ┏━━━┓
-    ┃ A ┃━━━━┃ B ┃
-    ┗━━━┛    ┗━━━┛
+    ╔═══╗ ╔═══╗
+    ║ A ║═║ B ║
+    ╚═══╝ ╚═══╝
 
 You can then add a second link to your document, and it will be added to the
 same chart as before.
@@ -43,6 +43,30 @@ come up with a nice and compact text representation of the chart.
 It doesn't handle huge charts very well (30+ nodes) and runs single threaded in
 WASM mode. I also have a compiled binary for linux that makes use of all the
 threads available to generate large graphs faster.
+
+# similar tools
+
+graph-easy is based on dots and mostly just better than this project.
+It can be easily used thanks to this hosted service
+https://dot-to-ascii.ggerganov.com/
+
+Adia does text to text for sequence diagrams
+https://github.com/pylover/adia
+
+Mermaid does text to svg/png for many graph types
+https://mermaid.live/edit
+
+Dots to ascii (python)
+https://github.com/ggerganov/dot-to-ascii
+
+Visual editor for plain text diagrams
+https://asciiflow.com/#/
+
+Text to image
+http://blockdiag.com/en/blockdiag/index.html
+
+Discussions
+https://stackoverflow.com/questions/3211801/graphviz-and-ascii-output
 
 ## Roadmap
 

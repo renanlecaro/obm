@@ -1133,7 +1133,7 @@ impl Individual {
     }
 
     pub fn to_string(&self, step: &StoryStep) -> String {
-        let bold = ["┃", "━", "┏", "┓", "┛", "┗"];
+        let bold = ["║", "═", "╔", "╗", "╝", "╚"];
         let normal = ["│", "─", "┌", "┐", "┘", "└"];
 
         // Initialize empty canvas
