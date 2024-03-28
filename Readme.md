@@ -19,10 +19,6 @@ Head to https://obm.lecaro.me/ to see an interactive side by side view.
 
 ## How does it work ?
 
-Since the beginning, we've been adding nodes and links to the same graph, it's
-just that the resulting nodes are introduced one by one. The nodes that have
-already been introduced are kept.
-
 The rendering of the graphs is powered by a small engine I wrote in rust, and
 running in a background thread in WASM. It uses a variety of methods to try to
 come up with a nice and compact text representation of the chart.
@@ -30,6 +26,16 @@ come up with a nice and compact text representation of the chart.
 It doesn't handle huge charts very well (30+ nodes) and runs single threaded in
 WASM mode. I also have a compiled binary for linux that makes use of all the
 threads available to generate large graphs faster.
+
+## Why build this ?
+
+Sequence diagrams are great to explain processes with 3-4 participants, but don't
+scale well when the number of participants goes up. I once had to explain how a SAAS
+queuing system for call centers works :  callers reach a call center, are
+forwarded to a twilio number, twilio reaches our API, talks to the caller, then hang up.
+
+This kind of process is hard to explain with a simple sequence diagram. That's when i
+thought that animating or modifying a flowchart would make sense.
 
 # similar tools
 
